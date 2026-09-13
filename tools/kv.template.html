@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<style>
+html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{font-family:"Zen Kaku Gothic New","Hiragino Sans",sans-serif;color:#FFF8EA;background:#221C17;position:relative}
+.bg{position:absolute;inset:0;background:
+  radial-gradient(900px 520px at 100% 0%, rgba(199,134,11,.28), transparent 60%),
+  radial-gradient(700px 500px at 0% 100%, rgba(142,59,28,.35), transparent 60%),
+  #221C17}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,248,234,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,248,234,.05) 1px,transparent 1px);background-size:60px 60px}
+.left{position:absolute;left:72px;top:58px;width:780px}
+.eyebrow{display:inline-block;font-size:19px;font-weight:700;letter-spacing:.14em;color:#221C17;background:#F2C25A;padding:6px 16px;border-radius:999px}
+h1{font-family:"Shippori Mincho","Hiragino Mincho ProN",serif;font-size:66px;line-height:1.12;margin:22px 0 0;letter-spacing:.01em;font-weight:700;white-space:nowrap}
+h1 small{display:block;font-family:"Zen Kaku Gothic New",sans-serif;font-size:26px;font-weight:700;color:#E9E0D2;letter-spacing:.06em;margin-bottom:8px}
+.sub{font-size:26px;line-height:1.5;margin-top:20px;color:#F3EBDD;font-weight:500}
+.sub b{color:#F2C25A;font-weight:900}
+.chips{display:flex;flex-wrap:nowrap;gap:10px;margin-top:24px}
+.chip{font-size:20px;font-weight:700;padding:8px 16px;border-radius:999px;border:2px solid rgba(255,248,234,.5);color:#FFF8EA}
+.url{position:absolute;left:72px;bottom:40px;font-size:24px;font-weight:700;letter-spacing:.02em;color:#F2C25A}
+.url small{display:block;font-size:15px;color:#BFB3A3;font-weight:500;letter-spacing:.03em;margin-top:6px}
+.phone{position:absolute;right:84px;top:44px;width:272px;height:560px;border-radius:38px;background:#0f0c0a;padding:10px;box-shadow:0 30px 60px rgba(0,0,0,.55),0 0 0 2px rgba(255,248,234,.18);transform:rotate(-4deg)}
+.phone .scr{width:252px;height:540px;border-radius:30px;overflow:hidden;background:#fbf7f0}
+.phone img{width:252px;height:auto;display:block}
+.pin{position:absolute;width:28px;height:28px;border-radius:50%;border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+</style></head><body>
+<div class="bg"></div><div class="grid"></div>
+<div class="left">
+  <span class="eyebrow">非公式 ・ 参加者が個人で作成</span>
+  <h1><small>神田カレー街食べ歩きスタンプラリー2026</small>神田カレーマップ 2026</h1>
+  <div class="sub">参加店<b>152店</b>を、スマホの地図と一覧で。<br>現在地から近い順、営業中の目安、メニューと価格。</div>
+  <div class="chips"><span class="chip">📍 近い順</span><span class="chip">🕒 営業中／本日定休</span><span class="chip">🍛 メニューと価格</span><span class="chip">✓ 訪問チェック</span></div>
+</div>
+<div class="url">{{url}}<small>アプリ不要・ブラウザで開くだけ　｜　情報・写真：神田カレーグランプリ公式サイトより引用</small></div>
+<div class="phone"><div class="scr"><img src="{{phone}}" alt=""></div></div>
+<span class="pin" style="background:#e66528;right:392px;top:96px"></span>
+<span class="pin" style="background:#185bac;right:24px;top:300px;width:20px;height:20px"></span>
+<span class="pin" style="background:#27a235;right:400px;top:560px;width:22px;height:22px"></span>
+</body></html>

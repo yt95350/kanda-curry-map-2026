@@ -1,0 +1,4 @@
+{
+  "_説明": "公開URL。独自ドメインに切り替えたらここを書き換えて build.py / make_kv.py を実行する（末尾の / を忘れずに）",
+  "base_url": "https://yt95350.github.io/kanda-curry-map-2026/"
+}

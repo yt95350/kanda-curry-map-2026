@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>参加店マップ（非公式）のご説明</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+@page { size: A4; margin: 0; }
+:root{
+  --ink:#221C17; --ink-2:#3A312A; --muted:#7A6E62; --faint:#A79C90; --rule:#E2D9CA; --tint:#FBF3E3; --tint-2:#F4ECDD;
+  --accent:#C7860B; --deep:#8E3B1C; --ok:#3B6E3B; --cream:#FFF8EA;
+  --serif:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --sans:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff}
+body{width:210mm;height:297mm;color:var(--ink);font-family:var(--sans);font-size:9pt;line-height:1.55;font-feature-settings:"palt";-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{width:210mm;height:297mm;display:flex;flex-direction:column;overflow:hidden}
+h1,h2,h3,p,ul,ol,dl{margin:0}
+b{font-weight:700}
+.ph{background:#F3EBDD;color:var(--muted);padding:0 1.2mm;border-radius:1mm}
+
+/* ===== 強：黒帯。お願いとデモ ===== */
+.hero{background:var(--ink);color:var(--cream);padding:8mm 13mm 6.5mm;display:grid;grid-template-columns:1fr 48mm;gap:8mm;align-items:center}
+.hero .eyebrow{font-size:7.6pt;letter-spacing:.22em;color:var(--accent);font-weight:700;margin-bottom:2.4mm}
+.hero h1{font-family:var(--serif);font-size:20pt;font-weight:700;line-height:1.32;letter-spacing:.01em}
+.hero h1 em{font-style:normal;color:#F2C25A}
+.hero .sub{font-size:9.2pt;line-height:1.65;margin-top:3mm;color:#E9E0D2;max-width:118mm}
+.hero .sub b{color:#fff}
+.hero .meta{font-size:7.8pt;color:#BFB3A3;margin-top:3.6mm;line-height:1.6}
+.hero .meta b{color:#F3EBDD;font-weight:500}
+.qrbox{background:#fff;border-radius:2mm;padding:3mm 3mm 2.4mm;text-align:center;color:var(--ink)}
+.qrbox img{width:36mm;height:36mm;display:block;margin:0 auto}
+.qrbox .cap{font-size:8pt;font-weight:700;margin-top:1.4mm;line-height:1.35;white-space:nowrap}
+.qrbox .url{font-size:6.6pt;color:var(--muted);word-break:break-all;line-height:1.3;margin-top:.8mm}
+.facts{display:grid;grid-template-columns:1fr 1fr 1fr;background:var(--tint);border-bottom:.6pt solid var(--rule)}
+.facts div{padding:3.2mm 4mm 3mm 13mm;border-right:.6pt solid var(--rule)}
+.facts div:nth-child(2){padding-left:6mm}.facts div:nth-child(3){padding-left:6mm;border-right:none}
+.facts b{display:block;font-family:var(--serif);font-size:15pt;line-height:1.1;color:var(--deep);font-variant-numeric:tabular-nums}
+.facts b small{font-size:9pt;margin-left:.6mm}
+.facts span{display:block;font-size:8pt;color:var(--ink-2);margin-top:.9mm}
+
+/* ===== 中：本文。解決と利点 ===== */
+.body{padding:6.5mm 13mm 0;display:grid;grid-template-columns:1fr 62mm;gap:8mm;flex:1;min-height:0;align-content:start}
+h2{font-size:8.4pt;letter-spacing:.18em;color:var(--accent);font-weight:700;margin-bottom:3mm}
+.ba{display:grid;grid-template-columns:1fr 6mm 1fr;border-top:1pt solid var(--ink)}
+.ba > div{padding:2.2mm 0;border-bottom:.5pt solid var(--rule);font-size:8.6pt;line-height:1.5}
+.ba .arrow{display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:900;font-size:10pt}
+.ba .h{font-size:7.6pt;letter-spacing:.12em;color:var(--muted);font-weight:700;padding:2mm 0 1.4mm}
+.ba .l{color:var(--muted)}
+.ba .r{color:var(--ink);font-weight:500}
+.ba .r b{color:var(--deep)}
+.benefit{display:flex;flex-direction:column;gap:3mm}
+.benefit div{padding:2.5mm 3.2mm;background:var(--tint);border-radius:1.5mm;font-size:8.6pt;line-height:1.5;color:var(--ink-2)}
+.benefit b{display:block;font-family:var(--serif);font-size:11pt;color:var(--ink);margin-bottom:1mm}
+.benefit div:first-child{background:var(--ink);color:#E9E0D2}
+.benefit div:first-child b{color:#F2C25A}
+
+/* ===== 強：お願いの帯 ===== */
+.ask{margin-top:5mm;background:var(--deep);color:var(--cream);padding:5mm 13mm 5.5mm;display:grid;grid-template-columns:1fr auto;gap:8mm;align-items:center}
+.ask .k{font-family:var(--serif);font-size:14pt;font-weight:700;line-height:1.35;color:#fff}
+.ask ol{margin:2.6mm 0 0;padding:0;list-style:none;display:grid;grid-template-columns:auto auto auto;gap:2mm 5mm;font-size:8.8pt;line-height:1.45}
+.ask ol li{display:flex;gap:1.6mm;align-items:flex-start}
+.ask ol li span{flex:none;width:5mm;height:5mm;border-radius:50%;background:#F2C25A;color:var(--ink);font-weight:900;font-size:7.6pt;display:flex;align-items:center;justify-content:center;margin-top:.4mm}
+.ask .contact{text-align:right;font-size:8.2pt;line-height:1.65;color:#F3EBDD;white-space:nowrap;border-left:.6pt solid rgba(255,248,234,.35);padding-left:8mm}
+.ask .contact b{font-family:var(--serif);font-size:11pt;color:#fff}
+.ask .contact .ph{background:rgba(255,255,255,.14);color:#F3EBDD}
+
+/* ===== 弱：土台の帯。参考情報 ===== */
+.base{background:var(--tint-2);padding:3.5mm 13mm 3.5mm;display:grid;grid-template-columns:1.15fr 1fr;gap:9mm;font-size:7.2pt;line-height:1.5;color:var(--muted)}
+.base h2{font-size:7pt;color:var(--faint);margin-bottom:1.2mm}
+.base p{margin:0}
+.base .opt{display:grid;grid-template-columns:auto 1fr;gap:.6mm 2.4mm}
+.base .opt dt{font-weight:700;color:var(--ink-2);white-space:nowrap}
+.base .opt dd{margin:0}
+.base .opt .cost{color:var(--faint)}
+.base ul{padding-left:1.1em}
+.base li{margin:.3mm 0}
+.base li::marker{color:var(--faint)}
+footer{background:var(--tint-2);padding:0 13mm 5mm;font-size:6.6pt;color:var(--faint);line-height:1.5}
+footer div{border-top:.5pt solid var(--rule);padding-top:1.8mm}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 強 -->
+  <div class="hero">
+    <div>
+      <div class="eyebrow">参加者が個人で作った非公式ページのご説明 ｜ 神田カレー街活性化委員会 御中</div>
+      <h1>参加店152店をスマホの地図で探せる<br>ページを、<em>個人で作りました</em>。</h1>
+      <p class="sub">出先で近くの店や営業時間を確かめたくなり、自分用に作ったものです。公式サイトの掲載内容をもとにしており、<b>非公式</b>である旨をページに載せています。<b>まだ一般には公開しておらず</b>、URLを知らせた友人数人が使っているだけです。</p>
+      <div class="meta">{{date}}　作成者：<b>{{name}}</b>{{org}}　神田カレー街食べ歩きスタンプラリー2026 参加者（会社員・個人）</div>
+    </div>
+    <div class="qrbox">
+      <img src="{{qr}}" alt="デモサイトのQRコード">
+      <div class="cap">まずスマホで開いてみてください</div>
+      <div class="url">{{url_display}}</div>
+    </div>
+  </div>
+  <div class="facts">
+    <div><b>152<small>店</small></b><span>全参加店を掲載。分類色は公式ガイドブック準拠</span></div>
+    <div><b>0<small>円</small></b><span>今季の費用。期間中は作成者が更新を続けます</span></div>
+    <div><b>個人情報なし</b><span>利用者の情報は取得せず、位置情報も端末内だけ</span></div>
+  </div>
+
+  <!-- 中 -->
+  <div class="body">
+    <div>
+      <h2>回っていて困ったこと → このページでは</h2>
+      <div class="ba">
+        <div class="h l">参加者が困っていること</div><div></div><div class="h">こうしました</div>
+        <div class="l">地図がPDF1枚。スマホでは拡大と移動の繰り返しで、現在地との関係がつかめない</div><div class="arrow">→</div><div class="r"><b>現在地から近い順</b>に表示。Googleマップの経路案内にそのまま進める</div>
+        <div class="l">どんなカレーの店かは、ガイドブックのページを行き来しないと分からない</div><div class="arrow">→</div><div class="r">一覧に<b>メニューと価格</b>、写真、紹介文。店名・メニュー・駅で検索</div>
+        <div class="l">「南インド系だけ」「まだ行っていない店だけ」で探せず、駅近や有名店に集中しがち</div><div class="arrow">→</div><div class="r"><b>分類と未訪問で絞り込み</b>。路地裏の店・初参加店にも同じ露出</div>
+        <div class="l">臨時休業や価格改定が地図・ガイドブックに反映されない</div><div class="arrow">→</div><div class="r">公式サイトの<b>お店からのお知らせを転記</b>（更新時点）。営業時間から「営業中／本日定休」の目安を表示</div>
+      </div>
+    </div>
+    <div>
+      <h2>お役に立てそうな点</h2>
+      <div class="benefit">
+        <div><b>事務局</b>「場所が分からない」という問い合わせの補助に。委員会側の作業は不要で、更新は作成者が個人で続けます。</div>
+        <div><b>参加店</b>駅から遠い店・初参加店も同じ見え方。公式サイトのお知らせを反映します。</div>
+        <div><b>参加者</b>迷わず着ける。好みや未訪問で選べる。出発前に営業状況が分かる。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 強 -->
+  <div class="ask">
+    <div>
+      <div class="k">ご覧いただき、お気づきの点があればお知らせください。</div>
+      <ol>
+        <li><span>1</span><div>QRコードからスマホで開いてみてください</div></li>
+        <li><span>2</span><div>写真や表記など、差し支えがあればメールで一言ください。すぐ対応します</div></li>
+        <li><span>3</span><div>お役に立ちそうでしたら、差し支えのない範囲でご紹介いただけると幸いです</div></li>
+      </ol>
+    </div>
+    <div class="contact"><b>{{name}}</b><br>{{email}}{{tel_line}}</div>
+  </div>
+
+  <!-- 弱 -->
+  <div class="base">
+    <div>
+      <h2>更新と対応について</h2>
+      <dl class="opt">
+        <dt>公開状況</dt><dd>SNSなどでの告知や、検索で見つかる設定はしていません。広く案内してよいかは、委員会のご判断を伺ってからにします。</dd>
+        <dt>更新</dt><dd>公式サイトの掲載内容をもとに、作成者が個人で更新します。営業状況の表示は営業時間の文章からの機械的な目安です。</dd>
+        <dt>ご指摘への対応</dt><dd>写真を外した版への切り替え、表記の変更、ページの取り下げなど、ご連絡いただければ当日中に対応します。</dd>
+        <dt>正式版のご検討時</dt><dd>委員会として正式にこうしたページを用意されるお考えがあれば、お知らせや営業時間の更新の仕組みも含めてお引き受けできます（費用は別途ご相談）。</dd>
+      </dl>
+    </div>
+    <div>
+      <h2>データと権利の扱い</h2>
+      <ul>
+        <li>店舗の紹介文・メニュー・営業時間は公式サイトの記載を載せ、写真は公式サイト上の画像をそのまま表示しています。各店から公式サイトの店舗ページへリンクしています。</li>
+        <li>お断りなく使っている点はお詫びします。差し支えがあれば直ちに非表示にします。</li>
+        <li>利用者の個人情報は取得しません。位置情報と訪問記録は端末内でのみ使います。</li>
+      </ul>
+    </div>
+  </div>
+  <footer><div>本資料は2026年9月11日時点のページ（参加店152店）に基づきます。ページは非公式で、神田カレー街活性化委員会は内容に関与していません。地図データ © OpenStreetMap contributors／地理院タイル。</div></footer>
+</div>
+</body>
+</html>
