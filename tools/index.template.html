@@ -5,16 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#b4531d">
 <meta property="og:type" content="website">
-<meta property="og:title" content="神田カレーマップ2026（非公式）">
-<meta property="og:description" content="神田カレー街食べ歩きスタンプラリー2026の参加店152店を、スマホの地図と一覧から。現在地から近い順、営業中の目安、メニューと価格。参加者が個人で作った非公式マップです。">
+<meta property="og:title" content="神田カレーマップ2026｜神田カレー街スタンプラリー参加152店の地図（非公式）">
+<meta property="og:description" content="神田カレーグランプリ「神田カレー街食べ歩きスタンプラリー2026」（8/1〜12/20）の参加カレー店152店を、スマホの地図と一覧から探せる非公式マップ。神田・神保町・秋葉原・御茶ノ水周辺で、現在地から近い順、営業中の目安、メニューと価格、訪問チェック。">
 <meta property="og:url" content="/*__OGURL__*/">
 <meta property="og:image" content="https://yt95350.github.io/kanda-curry-map-2026/og.png">
 <meta property="og:image:width" content="2400">
 <meta property="og:image:height" content="1260">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="description" content="神田カレー街食べ歩きスタンプラリー2026の参加店152店を、スマホの地図と一覧から探せる非公式マップ。">
-<title>神田カレーマップ2026（非公式）</title>
+<meta name="description" content="神田カレーグランプリ「神田カレー街食べ歩きスタンプラリー2026」（8/1〜12/20）の参加カレー店152店を、スマホの地図と一覧から探せる非公式マップ。神田・神保町・秋葉原・御茶ノ水周辺で、現在地から近い順、営業中の目安、メニューと価格、訪問チェック。">
+<link rel="canonical" href="/*__CANONICAL__*/">
+<meta property="og:site_name" content="神田カレーマップ2026（非公式）">
+<script type="application/ld+json">/*__JSONLD__*/</script>
+<title>神田カレーマップ2026｜神田カレー街スタンプラリー参加152店の地図（非公式）</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
 <style>
@@ -141,15 +144,25 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
   .handle{display:block;flex:none;padding:10px 0 4px;cursor:grab;touch-action:none}
   .handle::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:#d8cfc2;margin:0 auto}
 }
+.evbar{flex:none;display:flex;align-items:center;gap:8px;width:100%;border:none;border-bottom:1px solid var(--line);background:#fdf3e6;color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;text-align:left;cursor:pointer}
+.evbar span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evbar b{flex:none;color:var(--brand);font-weight:800}
+.evinfo{background:#fdf3e6;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:0 0 12px}
+.evinfo h3{margin:0 0 6px;font-size:15px}
+.evinfo dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13px;line-height:1.6}
+.evinfo dt{font-weight:700;white-space:nowrap;color:var(--muted)}
+.evinfo dd{margin:0}
+.evinfo p{margin:8px 0 0;font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
 <div id="app">
   <header>
-    <div class="brand">🍛 神田カレーマップ 2026<small id="verBadge">非公式</small></div>
+    <div class="brand">🍛 神田カレーマップ<small id="verBadge">非公式</small></div>
     <button class="stat" id="visitedStat" title="訪問済みだけ表示">訪問 0</button>
     <button class="icon" id="aboutBtn" title="このアプリについて">ⓘ</button>
   </header>
+  <button class="evbar" id="evbar"><span>8/1〜12/20｜10店でバディ賞、42個からマイスター</span><b>概要 ›</b></button>
   <div class="toolbar">
     <input id="q" type="search" placeholder="店名・メニュー・駅・住所で検索" autocomplete="off">
     <button id="locBtn" title="現在地を表示・近い順に並べる">📍</button>
@@ -176,6 +189,15 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
 <dialog id="about">
   <div class="about">
     <h2>🍛 神田カレーマップ 2026（非公式）</h2>
+    <div class="evinfo"><h3>スタンプラリーの概要</h3><dl>
+      <dt>どんな催し</dt><dd>神田カレーグランプリの「神田カレー街食べ歩きスタンプラリー2026」。神田・神保町・秋葉原・御茶ノ水周辺のカレー店を食べ歩いて、スタンプを集める</dd>
+      <dt>期間</dt><dd>2026年8月1日(土)〜12月20日(日)の約142日間</dd>
+      <dt>対象</dt><dd>カレー店152店＋スタンプポイント11か所（JRの3駅、東京メトロの5駅、書泉の2店舗、マーチエキュート神田万世橋）の計163か所</dd>
+      <dt>参加方法</dt><dd>公式ガイドブックのスタンプシート、または公式の<a href="http://kanda-curry.hi-pon.com/" target="_blank" rel="noopener">スマホ版</a>。どの店から回ってもよい</dd>
+      <dt>バディ賞</dt><dd>カレー店10店のスタンプで「神田カレーバディカード」。受け取りは12月20日まで</dd>
+      <dt>マイスター</dt><dd>カレー店36個＋スタンプポイント6個の計42個から。79個でブロンズ、109個でシルバー、136個でゴールド、全163個でグランドマイスター</dd>
+      <dt>ご注意</dt><dd>営業状況・メニュー・料金は変わることがある。変更は公式サイトの「重要なお知らせ」とスマホ版に掲載される</dd>
+    </dl><p>公式サイトの内容を要約したものです。賞品や応募方法の詳細は<a href="https://kanda-curry.com/stamprally2026/" target="_blank" rel="noopener">公式サイト</a>をご確認ください。このページの「訪問済み」は自分用のメモで、公式のスタンプにはなりません。</p></div>
     <p>神田カレーグランプリ「神田カレー街食べ歩きスタンプラリー2026」の参加店を地図で探せる<b>非公式</b>のマップです。主催者とは関係ありません。</p>
     <ul>
       <li><b>引用元：神田カレーグランプリ公式サイト（<span id="updatedJ"></span>現在）</b>。店舗情報・写真は<a href="https://kanda-curry.com/stamprally2026/" target="_blank" rel="noopener">公式サイト</a>の掲載内容（<span id="updated"></span>時点）を非商用で引用しています。営業時間・メニュー・価格は変更される場合があります。最新情報は<a href="https://kanda-curry.com/?page_id=8695" target="_blank" rel="noopener">公式「重要なお知らせ」</a>と各店舗の公式ページをご確認ください。</li>
@@ -183,6 +205,7 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
       <li>「営業中」「本日定休」などの表示は、公式サイトの営業時間・定休日の文章を機械的に読み取った目安です。祝日・臨時休業・ランチのみ営業などは反映しきれないため、原文と各店の案内を必ずご確認ください。支払い方法は公式サイトに項目がないため、記載のある店と訪問者の報告分のみ表示しています。</li>
       <li>「訪問済み」の記録はこの端末のブラウザ内にだけ保存されます（サーバーには送信されません）。公式スタンプは別途、店舗でスタンプシートに押してもらうか<a href="http://kanda-curry.hi-pon.com/" target="_blank" rel="noopener">スマホ版</a>で取得してください。</li>
       <li>公式リンク：<a href="https://kanda-curry.com/wp/wp-content/uploads/2026/07/kcgsr-2026-map.pdf" target="_blank" rel="noopener">公式マップPDF</a> ／ <a href="https://kanda-curry.com/wp/wp-content/uploads/2026/07/KCG2026_stampsheet.pdf" target="_blank" rel="noopener">スタンプシートPDF</a></li>
+      <li><a href="stores.html">参加店の一覧（テキスト版）</a>：カテゴリ別に全店の住所・営業時間・メニューを1ページにまとめています。</li>
       <li>地図: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors ／ <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">地理院タイル</a></li>
     </ul>
     <button class="close" id="aboutClose">閉じる</button>
@@ -507,10 +530,13 @@ const DATA = /*__DATA__*/null;
     const c = e.target.closest('.card'); if (c) openDetail(c.dataset.id, true);
   });
   let mvT; map.on('moveend', () => { if (state.inView) { clearTimeout(mvT); mvT = setTimeout(renderList, 150); } });
-  $('#aboutBtn').addEventListener('click', () => $('#about').showModal());
+  const openAbout = () => { const d = $('#about'); d.showModal(); if (document.activeElement) document.activeElement.blur(); d.scrollTop = 0; d.querySelector('.about').scrollTop = 0; };
+  $('#aboutBtn').addEventListener('click', openAbout);
+  $('#evbar').addEventListener('click', openAbout);
+  if (location.hash === '#about') openAbout();
   $('#aboutClose').addEventListener('click', () => $('#about').close());
   $('#updated').textContent = DATA.updated; $('#updatedJ').textContent = jdate(DATA.updated);
-  if (!MEDIA) { $('#verBadge').textContent = '非公式・写真なし版'; document.title = '神田カレーマップ2026（非公式・写真なし版）'; }
+  if (!MEDIA) { document.title = '神田カレーマップ2026（非公式・写真なし版）'; }
   window.addEventListener('hashchange', route);
   window.addEventListener('resize', () => { if (!isMobile()) { panel.classList.remove('half', 'full', 'peek'); panel.style.transform = ''; } else setSheet(sheet); map.invalidateSize(); });
   function route() {
