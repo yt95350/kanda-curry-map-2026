@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kanda-curry-map.com/sitemap.xml
