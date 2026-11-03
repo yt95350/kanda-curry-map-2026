@@ -38,6 +38,10 @@ build(True, "index.html")
 build(True, "full.html")
 build(False, "lite.html")
 
+CF_TAG = """<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "70d2570f412a4b929ea9329355f2585f"}'></script><!-- End Cloudflare Web Analytics -->"""
+def jdate(iso):
+    y, m, d = iso.split("-"); return f"{y}年{int(m)}月{int(d)}日"
+
 # KML for Google My Maps
 def kml_color(hexc):  # aabbggrr
     r, g, b = hexc[1:3], hexc[3:5], hexc[5:7]
@@ -60,6 +64,7 @@ for cid, c in data["cats"].items():
         if s["notice"]: desc.append("【お知らせ】\n" + s["notice"])
         desc.append("公式ページ: " + s["url"])
         if s["approx"]: desc.append("※位置は住所からの推定（概算）")
+        if s.get("gone"): desc.insert(0, "※" + jdate(s["gone"]) + "で閉店（公式サイトのお知らせより）")
         k.append(f'<Placemark><name>{html.escape(s["name"])}</name><styleUrl>#{cid}</styleUrl>'
                  f'<description><![CDATA[{html.escape(chr(10).join(desc)).replace(chr(10), "<br>")}]]></description>'
                  f'<Point><coordinates>{s["lng"]},{s["lat"]},0</coordinates></Point></Placemark>')
@@ -70,24 +75,22 @@ open(os.path.join(APP, "kanda-curry-2026.kml"), "w", encoding="utf-8").write("\n
 # CSV (UTF-8 with BOM for Excel / Google My Maps import)
 with open(os.path.join(APP, "kanda-curry-2026.csv"), "w", encoding="utf-8-sig", newline="") as f:
     w = csv.writer(f)
-    w.writerow(["店名", "カテゴリ", "緯度", "経度", "住所", "最寄駅", "メニュー", "営業時間", "定休日", "電話", "辛さ", "テイクアウト", "ガイドブックページ", "位置概算", "公式ページ"])
+    w.writerow(["店名", "カテゴリ", "緯度", "経度", "住所", "最寄駅", "メニュー", "営業時間", "定休日", "電話", "辛さ", "テイクアウト", "ガイドブックページ", "位置概算", "公式ページ", "閉店"])
     for s in data["stores"]:
         w.writerow([s["name"], data["cats"][f'c{s["cat"]}']["name"], s["lat"], s["lng"], s["addr"], s["station"].replace("\n", " / "),
                     " / ".join(s["menu"]), s["hours"].replace("\n", " / "), s["closed"], s["tel"], s["spice"], s["takeout"],
-                    s["page"] or "", "概算" if s["approx"] else "", s["url"]])
+                    s["page"] or "", "概算" if s["approx"] else "", s["url"], jdate(s["gone"]) + "で閉店" if s.get("gone") else ""])
 json.dump(data, open(os.path.join(APP, "data.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print("wrote KML/CSV/data.json")
 
 # 参加店の一覧（テキスト版）。地図はJavaScriptで描くため、検索エンジンと読み上げ向けに静的なHTMLも用意する。
 # 載せるのは事実情報だけ（写真と紹介文は地図のほうにだけ出す）。
-def jdate(iso):
-    y, m, d = iso.split("-"); return f"{y}年{int(m)}月{int(d)}日"
 E = html.escape
 n = len(data["stores"])
 h = [f"""<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>神田カレー街スタンプラリー2026 参加店一覧（{n}店）｜神田カレーマップ（非公式）</title>
 <meta name="description" content="神田カレー街食べ歩きスタンプラリー2026の参加カレー店{n}店を、欧風・インド・スープなどのカテゴリ別に一覧。住所、最寄駅、営業時間、定休日、メニューと価格。地図で探せる非公式マップつき。">
-<link rel="canonical" href="{BASE_URL}stores.html"><meta property="og:image" content="{BASE_URL}og.png"><meta property="og:title" content="神田カレー街スタンプラリー2026 参加店一覧（非公式）">
+<link rel="canonical" href="{BASE_URL}stores.html">{CF_TAG}<meta property="og:image" content="{BASE_URL}og.png"><meta property="og:title" content="神田カレー街スタンプラリー2026 参加店一覧（非公式）">
 <style>body{{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",Meiryo,sans-serif;color:#2b241d;background:#fbf7f0;margin:0;line-height:1.7}}
 main{{max-width:760px;margin:0 auto;padding:16px}}h1{{font-size:22px;line-height:1.4}}h2{{font-size:18px;margin:28px 0 8px;padding:6px 10px;background:#b4531d;color:#fff;border-radius:8px}}
 article{{background:#fff;border:1px solid #e9e1d5;border-radius:10px;padding:10px 12px;margin:8px 0}}h3{{font-size:16px;margin:0 0 4px}}article p{{margin:2px 0;font-size:14px}}
@@ -107,7 +110,7 @@ for cid, c in data["cats"].items():
     h.append(f'<h2 id="{cid}">{E(c["name"])}カレー（{len(ss)}店）</h2>' if c["name"].endswith(("風", "ープ")) else f'<h2 id="{cid}">{E(c["name"])}（{len(ss)}店）</h2>')
     for s in ss:
         one = lambda t: E(" ／ ".join(x.strip() for x in str(t).split("\n") if x.strip()))
-        h.append(f'<article><h3><a href="./#s={E(s["id"])}">{E(s["name"])}</a></h3>')
+        h.append(f'<article><h3><a href="./#s={E(s["id"])}">{E(s["name"])}</a>{"（" + jdate(s["gone"]) + "で閉店）" if s.get("gone") else ""}</h3>')
         if s.get("addr"): h.append(f'<p>住所：{one(s["addr"])}</p>')
         if s.get("station"): h.append(f'<p>最寄駅：{one(s["station"])}</p>')
         if s.get("hours"): h.append(f'<p>営業時間：{one(s["hours"])}' + (f'　定休日：{one(s["closed"])}' if s.get("closed") else "") + "</p>")

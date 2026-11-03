@@ -59,12 +59,18 @@ header .icon{background:rgba(255,255,255,.18);border:none;border-radius:999px;wi
 .pin.pin-v{background:#fff;color:var(--c);border-color:var(--c)}
 .pin.pin-sel{transform:scale(1.35);box-shadow:0 0 0 4px rgba(245,196,81,.75),0 3px 8px rgba(0,0,0,.4);z-index:1000}
 .pin.pin-approx{border-style:dashed}
-.cl{width:34px;height:34px;border-radius:50%;background:rgba(180,83,29,.9);color:#fff;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.pin.pin-n{background:#f5c451;color:#5a3b00;border-color:var(--c);font-size:14px}
+.cl.cl-done{background:var(--ok);font-size:17px}
+.cl .cl-star{position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;background:#f5c451;color:#5a3b00;border:1.5px solid #fff;font-size:11px;line-height:1;display:flex;align-items:center;justify-content:center}
+.cl{position:relative;width:34px;height:34px;border-radius:50%;background:rgba(180,83,29,.9);color:#fff;border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
 .me{width:18px;height:18px;border-radius:50%;background:#1a73e8;border:3px solid #fff;box-shadow:0 0 0 6px rgba(26,115,232,.25)}
 /* panel */
 #panel{background:var(--card);display:flex;flex-direction:column;min-height:0}
 .handle{display:none}
 .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 14px;border-bottom:1px solid var(--line);flex:none;font-size:13px;color:var(--muted)}
+.panel-head .sp{flex:1}
+.panel-head .viewbtn{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:13px;background:#fff;color:var(--muted);cursor:pointer;white-space:nowrap}
+.panel-head .viewbtn.on{background:#3d3128;border-color:#3d3128;color:#fff}
 .panel-head select{border:1px solid var(--line);border-radius:8px;padding:4px 6px;font-size:13px;background:#fff}
 #list{overflow-y:auto;flex:1;min-height:0;-webkit-overflow-scrolling:touch;padding-bottom:env(safe-area-inset-bottom)}
 .card{display:flex;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;align-items:center}
@@ -82,6 +88,9 @@ header .icon{background:rgba(255,255,255,.18);border:none;border-radius:999px;wi
 .card .mn{font-size:12.5px;color:var(--ink);opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .card .st{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
 .card .dist{font-weight:700;color:var(--brand);margin-right:6px}
+.card .btns{flex:none;display:flex;flex-direction:column;gap:6px}
+.card .nbtn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-size:16px;cursor:pointer;color:#bbb}
+.card .nbtn.on{background:#f5c451;border-color:#f5c451;color:#5a3b00}
 .card .vbtn{flex:none;width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:#fff;font-size:16px;cursor:pointer;color:#bbb}
 .card .vbtn.on{background:var(--ok);border-color:var(--ok);color:#fff}
 .empty{padding:30px 16px;text-align:center;color:var(--muted);font-size:14px}
@@ -105,6 +114,9 @@ header .icon{background:rgba(255,255,255,.18);border:none;border-radius:999px;wi
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 14px}
 .actions a,.actions button{display:flex;align-items:center;justify-content:center;gap:6px;border-radius:12px;padding:11px 8px;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
 .actions .primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.actions .nxt{grid-column:1/-1}
+.actions .nxt.on{background:#f5c451;border-color:#f5c451;color:#5a3b00}
+.stx-gone{background:#3d3128;color:#fff}
 .actions .visit.on{background:var(--ok);border-color:var(--ok);color:#fff}
 .sec{margin:14px 0}
 .sec h2{font-size:13px;color:var(--brand);margin:0 0 6px;letter-spacing:.04em}
@@ -154,6 +166,7 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
 .evinfo dd{margin:0}
 .evinfo p{margin:8px 0 0;font-size:12px;color:var(--muted)}
 </style>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "70d2570f412a4b929ea9329355f2585f"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 <div id="app">
@@ -174,6 +187,8 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
       <div class="handle" id="handle"></div>
       <div class="panel-head" id="panelHead">
         <span id="count"></span>
+        <span class="sp"></span>
+        <button class="viewbtn" id="inViewBtn" title="一覧を、いま地図に見えている範囲の店だけにする">地図内のみ</button>
         <select id="sort">
           <option value="open">営業中を先に</option>
           <option value="cat">カテゴリ順</option>
@@ -197,13 +212,16 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
       <dt>バディ賞</dt><dd>カレー店10店のスタンプで「神田カレーバディカード」。受け取りは12月20日まで</dd>
       <dt>マイスター</dt><dd>カレー店36個＋スタンプポイント6個の計42個から。79個でブロンズ、109個でシルバー、136個でゴールド、全163個でグランドマイスター</dd>
       <dt>ご注意</dt><dd>営業状況・メニュー・料金は変わることがある。変更は公式サイトの「重要なお知らせ」とスマホ版に掲載される</dd>
+      <dt id="goneDt" hidden>閉店</dt><dd id="goneDd" hidden></dd>
     </dl><p>公式サイトの内容を要約したものです。賞品や応募方法の詳細は<a href="https://kanda-curry.com/stamprally2026/" target="_blank" rel="noopener">公式サイト</a>をご確認ください。このページの「訪問済み」は自分用のメモで、公式のスタンプにはなりません。</p></div>
     <p>神田カレーグランプリ「神田カレー街食べ歩きスタンプラリー2026」の参加店を地図で探せる<b>非公式</b>のマップです。主催者とは関係ありません。</p>
     <ul>
       <li><b>引用元：神田カレーグランプリ公式サイト（<span id="updatedJ"></span>現在）</b>。店舗情報・写真は<a href="https://kanda-curry.com/stamprally2026/" target="_blank" rel="noopener">公式サイト</a>の掲載内容（<span id="updated"></span>時点）を非商用で引用しています。営業時間・メニュー・価格は変更される場合があります。最新情報は<a href="https://kanda-curry.com/?page_id=8695" target="_blank" rel="noopener">公式「重要なお知らせ」</a>と各店舗の公式ページをご確認ください。</li>
       <li>位置は各店の公式ページのGoogleマップリンクをもとにしています。点線のピン（<b>位置は概算</b>）は住所から推定した位置で、数十mずれることがあります。</li>
       <li>「営業中」「本日定休」などの表示は、公式サイトの営業時間・定休日の文章を機械的に読み取った目安です。祝日・臨時休業・ランチのみ営業などは反映しきれないため、原文と各店の案内を必ずご確認ください。支払い方法は公式サイトに項目がないため、記載のある店と訪問者の報告分のみ表示しています。</li>
-      <li>「訪問済み」の記録はこの端末のブラウザ内にだけ保存されます（サーバーには送信されません）。公式スタンプは別途、店舗でスタンプシートに押してもらうか<a href="http://kanda-curry.hi-pon.com/" target="_blank" rel="noopener">スマホ版</a>で取得してください。</li>
+      <li>「朝」「ランチ」「ディナー」は、今日の営業時間のうち、11時より前に開く店／11〜15時に開いている店／17時以降に開いている店を表します。カレーの提供時間とは違う場合があるので、お知らせ欄もご確認ください。</li>
+      <li>「訪問済み」と「次行く」の記録はこの端末のブラウザ内にだけ保存されます（サーバーには送信されません）。公式スタンプは別途、店舗でスタンプシートに押してもらうか<a href="http://kanda-curry.hi-pon.com/" target="_blank" rel="noopener">スマホ版</a>で取得してください。</li>
+      <li>アクセス数の集計に、Cookieを使わない解析（Cloudflare Web Analytics）を使っています。個人を特定する情報は集めていません。</li>
       <li>公式リンク：<a href="https://kanda-curry.com/wp/wp-content/uploads/2026/07/kcgsr-2026-map.pdf" target="_blank" rel="noopener">公式マップPDF</a> ／ <a href="https://kanda-curry.com/wp/wp-content/uploads/2026/07/KCG2026_stampsheet.pdf" target="_blank" rel="noopener">スタンプシートPDF</a></li>
       <li><a href="stores.html">参加店の一覧（テキスト版）</a>：カテゴリ別に全店の住所・営業時間・メニューを1ページにまとめています。</li>
       <li>地図: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors ／ <a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">地理院タイル</a></li>
@@ -232,8 +250,13 @@ const DATA = /*__DATA__*/null;
   let visited = {};
   try { visited = JSON.parse(localStorage.getItem(LS) || '{}') || {}; } catch(e) { visited = {}; }
   const saveVisited = () => { try { localStorage.setItem(LS, JSON.stringify(visited)); } catch(e) {} };
+  const LS_NEXT = 'kcg2026.next';
+  let nextUp = {};
+  try { nextUp = JSON.parse(localStorage.getItem(LS_NEXT) || '{}') || {}; } catch(e) { nextUp = {}; }
+  const saveNext = () => { try { localStorage.setItem(LS_NEXT, JSON.stringify(nextUp)); } catch(e) {} };
+  const SLOTS = [['am', '朝'], ['lunch', 'ランチ'], ['dinner', 'ディナー']];
 
-  const state = { cats: new Set(Object.keys(CATS).map(k => +k.slice(1))), q: '', visit: 'all', inView: false, sort: 'open', pos: null, sel: null, openOnly: false };
+  const state = { cats: new Set(Object.keys(CATS).map(k => +k.slice(1))), q: '', visit: 'all', inView: false, sort: 'open', pos: null, sel: null, openOnly: false, nextOnly: false, slots: new Set(SLOTS.map(x => x[0])) };
   STORES.forEach(s => { s._search = nfkc([s.name, s.kana, s.menu.join(' '), s.addr, s.station, catOf(s).name, s.type, s.spice, s.pay || ''].join(' ')); s._dist = null; });
 
   // ---------- map
@@ -244,16 +267,20 @@ const DATA = /*__DATA__*/null;
   osm.addTo(map);
   L.control.layers({ 'OpenStreetMap': osm, '地理院 淡色地図': gsi }, null, { position: 'topright' }).addTo(map);
   const cluster = L.markerClusterGroup({ maxClusterRadius: 34, disableClusteringAtZoom: 17, spiderfyOnMaxZoom: true, showCoverageOnHover: false,
-    iconCreateFunction: c => L.divIcon({ html: '<div class="cl">' + c.getChildCount() + '</div>', className: '', iconSize: [34, 34] }) });
+    iconCreateFunction: c => {
+      const ms = c.getAllChildMarkers(), done = ms.every(m => visited[m._sid]), star = ms.some(m => nextUp[m._sid]);
+      return L.divIcon({ html: '<div class="cl' + (done ? ' cl-done' : '') + '">' + (done ? '✓' : c.getChildCount()) + (star ? '<span class="cl-star">★</span>' : '') + '</div>', className: '', iconSize: [34, 34] });
+    } });
   map.addLayer(cluster);
   const markers = {};
   function icon(s) {
-    const v = !!visited[s.id], sel = state.sel === s.id;
+    const v = !!visited[s.id], n = !!nextUp[s.id], sel = state.sel === s.id;
     return L.divIcon({ className: '', iconSize: [24, 24], iconAnchor: [12, 12],
-      html: '<div class="pin' + (v ? ' pin-v' : '') + (sel ? ' pin-sel' : '') + (s.approx ? ' pin-approx' : '') + '" style="--c:' + catOf(s).color + '">' + (v ? '✓' : '') + '</div>' });
+      html: '<div class="pin' + (n ? ' pin-n' : v ? ' pin-v' : '') + (sel ? ' pin-sel' : '') + (s.approx ? ' pin-approx' : '') + '" style="--c:' + catOf(s).color + '">' + (n ? '★' : v ? '✓' : '') + '</div>' });
   }
   STORES.forEach(s => {
-    const m = L.marker([s.lat, s.lng], { icon: icon(s), title: s.name, zIndexOffset: 0 });
+    const m = L.marker([s.lat, s.lng], { icon: icon(s), title: s.name, zIndexOffset: nextUp[s.id] ? 500 : 0 });
+    m._sid = s.id;
     m.on('click', () => openDetail(s.id, false));
     markers[s.id] = m;
   });
@@ -278,7 +305,19 @@ const DATA = /*__DATA__*/null;
     rules.forEach(r => r.r.forEach(x => rs.push(x)));
     return rs.sort((a, b) => a[0] - b[0]);
   }
+  const isGone = s => !!s.gone && dayKey(jst()).ymd > s.gone;
+  // 今日の営業時間が 朝（11時より前に開く）／ランチ（11〜15時）／ディナー（17時以降）のどれに当たるか
+  function slotsToday(s) {
+    const rs = rangesFor(s.sched, dayKey(jst()));
+    if (rs === 'closed') return [];
+    const out = [];
+    if (rs.some(r => r[0] < 660)) out.push('am');
+    if (rs.some(r => r[0] < 900 && r[1] > 660)) out.push('lunch');
+    if (rs.some(r => r[1] > 1020)) out.push('dinner');
+    return out;
+  }
   function statusOf(s) {
+    if (isGone(s)) { const m = s.gone.split('-'); return { k: 'gone', rank: 5, label: (+m[1]) + '/' + (+m[2]) + ' 閉店', today: '' }; }
     const sc = s.sched;
     if (!sc || !sc.ok) return { k: 'unknown', rank: 2, label: '', today: '' };
     const t = jst(), dk = dayKey(t), now = t.getHours() * 60 + t.getMinutes();
@@ -307,7 +346,11 @@ const DATA = /*__DATA__*/null;
 
   // ---------- filtering
   function passes(s, useBounds) {
+    // 閉店した店は、名前で探したときと訪問済みの一覧にだけ出す
+    if (isGone(s) && !state.q && !(state.visit === 'done' && visited[s.id])) return false;
     if (!state.cats.has(s.cat)) return false;
+    if (state.nextOnly && !nextUp[s.id]) return false;
+    if (state.slots.size < SLOTS.length && s.sched && s.sched.ok && !slotsToday(s).some(x => state.slots.has(x))) return false;
     if (state.visit === 'done' && !visited[s.id]) return false;
     if (state.visit === 'todo' && visited[s.id]) return false;
     if (state.q && !s._search.includes(state.q)) return false;
@@ -350,20 +393,23 @@ const DATA = /*__DATA__*/null;
         '<div class="hr">' + stxHtml(x) + (hoursLine ? '<span class="th2">' + esc(hoursLine) + '</span>' : '') + pay + '</div>' +
         '<div class="mn">' + esc(menu) + '</div>' +
         '<div class="st">' + dist + esc(c.name) + (stn ? ' ・ ' + esc(stn) : '') + (s.approx ? ' ・ 位置は概算' : '') + '</div></div>' +
-        '<button class="vbtn' + (v ? ' on' : '') + '" data-v="' + esc(s.id) + '" title="訪問済みにする">✓</button></div>';
+        '<div class="btns"><button class="vbtn' + (v ? ' on' : '') + '" data-v="' + esc(s.id) + '" title="訪問済みにする">✓</button>' +
+        '<button class="nbtn' + (nextUp[s.id] ? ' on' : '') + '" data-n="' + esc(s.id) + '" title="次行く">' + (nextUp[s.id] ? '★' : '☆') + '</button></div></div>';
     }).join('');
   }
   function renderStat() {
-    const n = STORES.filter(s => visited[s.id]).length;
-    $('#visitedStat').textContent = '訪問 ' + n + ' / ' + STORES.length;
+    const live = STORES.filter(s => !isGone(s));
+    $('#visitedStat').textContent = '訪問 ' + live.filter(s => visited[s.id]).length + ' / ' + live.length;
   }
   function renderChips() {
     const counts = {};
-    STORES.forEach(s => { counts[s.cat] = (counts[s.cat] || 0) + 1; });
+    STORES.forEach(s => { if (!isGone(s)) counts[s.cat] = (counts[s.cat] || 0) + 1; });
+    const nextCount = STORES.filter(s => nextUp[s.id] && !isGone(s)).length;
     let h = '';
     h += '<button class="chip util' + (state.openOnly ? ' on' : '') + '" data-open="1">営業中</button>';
+    SLOTS.forEach(x => { h += '<button class="chip util' + (state.slots.has(x[0]) ? ' on' : '') + '" data-slot="' + x[0] + '">' + x[1] + '</button>'; });
     h += '<button class="chip util' + (state.visit === 'todo' ? ' on' : '') + '" data-visit="todo">未訪問</button>';
-    h += '<button class="chip util' + (state.inView ? ' on' : '') + '" data-inview="1">🗺 表示範囲のみ</button>';
+    h += '<button class="chip util' + (state.nextOnly ? ' on' : '') + '" data-nextonly="1">★ 次行く<span class="n">' + nextCount + '</span></button>';
     Object.keys(CATS).forEach(k => {
       const id = +k.slice(1), c = CATS[k];
       h += '<button class="chip' + (state.cats.has(id) ? ' on' : '') + '" data-cat="' + id + '" style="--c:' + c.color + '">' + esc(c.name) + '<span class="n">' + (counts[id] || 0) + '</span></button>';
@@ -402,7 +448,8 @@ const DATA = /*__DATA__*/null;
     { const x = st(s); if (x.label || x.today) h += '<div class="dstatus">' + stxHtml(x) + (x.today ? '<span>本日 ' + esc(x.today) + '</span>' : '') + '<span style="color:var(--muted);font-size:12px">（公式の営業時間からの目安）</span></div>'; }
     if (s.notice) h += '<div class="notice"><b>お店からのお知らせ（公式サイトより）</b>' + esc(s.notice) + '</div>';
     h += '<div class="actions"><a class="primary" href="' + esc(dir) + '" target="_blank" rel="noopener">🚶 経路（Googleマップ）</a>' +
-      '<button class="visit' + (v ? ' on' : '') + '" id="visit">' + (v ? '✓ 訪問済み ' + v : '☐ 訪問済みにする') + '</button></div>';
+      '<button class="visit' + (v ? ' on' : '') + '" id="visit">' + (v ? '✓ 訪問済み ' + v : '☐ 訪問済みにする') + '</button>' +
+      '<button class="nxt' + (nextUp[s.id] ? ' on' : '') + '" id="nxt">' + (nextUp[s.id] ? '★ 次行く（外す）' : '☆ 次行く') + '</button></div>';
     if (s.menu.length) h += '<div class="sec"><h2>メニュー（公式サイト掲載）</h2>' + menuHtml(s.menu) + '</div>';
     if (MEDIA && s.desc && s.desc.length) {
       h += '<div class="sec"><h2>お店について</h2>';
@@ -427,6 +474,7 @@ const DATA = /*__DATA__*/null;
     $('#back').onclick = closeDetail;
     $('#share').onclick = () => share(s);
     $('#visit').onclick = () => { toggleVisit(s.id); openDetail(s.id, true); };
+    $('#nxt').onclick = () => { toggleNext(s.id); openDetail(s.id, true); };
     try { history.replaceState(null, '', '#s=' + encodeURIComponent(s.id)); } catch (e) {}
     if (isMobile()) setSheet('half');
     focusOn(s, fromList);
@@ -450,10 +498,27 @@ const DATA = /*__DATA__*/null;
     }
   }
   function toggleVisit(id) {
-    if (visited[id]) delete visited[id]; else visited[id] = new Date().toISOString().slice(0, 10);
+    if (visited[id]) delete visited[id];
+    else {
+      visited[id] = new Date().toISOString().slice(0, 10);
+      if (nextUp[id]) { delete nextUp[id]; saveNext(); markers[id].setZIndexOffset(0); renderChips(); }  // 行ったら「次行く」は外す
+    }
     saveVisited();
-    markers[id].setIcon(icon(STORES.find(x => x.id === id)));
+    afterMark(id);
     renderStat(); renderList();
+  }
+  function toggleNext(id) {
+    if (nextUp[id]) delete nextUp[id]; else nextUp[id] = new Date().toISOString().slice(0, 10);
+    saveNext();
+    markers[id].setZIndexOffset(nextUp[id] ? 500 : 0);
+    afterMark(id);
+    renderChips(); renderList();
+  }
+  function afterMark(id) {
+    // 絞り込み中なら地図のピンも入れ替える。それ以外はピンとクラスタの表示だけ更新する
+    if (state.visit !== 'all' || state.nextOnly) { refreshMarkers(); return; }
+    markers[id].setIcon(icon(STORES.find(x => x.id === id)));
+    cluster.refreshClusters();
   }
   function share(s) {
     const url = location.href.split('#')[0] + '#s=' + encodeURIComponent(s.id);
@@ -517,7 +582,18 @@ const DATA = /*__DATA__*/null;
       else if (state.cats.has(id)) { state.cats.delete(id); if (!state.cats.size) state.cats = new Set(Object.keys(CATS).map(k => +k.slice(1))); }
       else state.cats.add(id);
     } else if (b.dataset.visit) { state.visit = state.visit === 'todo' ? 'all' : 'todo'; }
-    else if (b.dataset.inview) { state.inView = !state.inView; }
+    else if (b.dataset.slot) {
+      // カテゴリと同じ動き：全部ONの状態で押すとそれだけ、以降は押すたびにON/OFF、全部消えたら全部ONに戻す
+      const k = b.dataset.slot, all = state.slots.size === SLOTS.length;
+      if (all) state.slots = new Set([k]);
+      else if (state.slots.has(k)) { state.slots.delete(k); if (!state.slots.size) state.slots = new Set(SLOTS.map(x => x[0])); }
+      else state.slots.add(k);
+      if (state.slots.size < SLOTS.length) toast('今日の営業時間で絞り込んでいます');
+    }
+    else if (b.dataset.nextonly) {
+      state.nextOnly = !state.nextOnly;
+      if (state.nextOnly && !Object.keys(nextUp).length) toast('お店の ☆ を押すと、ここに集まります');
+    }
     else if (b.dataset.open) { state.openOnly = !state.openOnly; }
     renderChips(); refreshAll();
   });
@@ -527,14 +603,17 @@ const DATA = /*__DATA__*/null;
   $('#locBtn').addEventListener('click', locate);
   $('#list').addEventListener('click', e => {
     const v = e.target.closest('.vbtn'); if (v) { e.stopPropagation(); toggleVisit(v.dataset.v); return; }
+    const n = e.target.closest('.nbtn'); if (n) { e.stopPropagation(); toggleNext(n.dataset.n); return; }
     const c = e.target.closest('.card'); if (c) openDetail(c.dataset.id, true);
   });
+  $('#inViewBtn').addEventListener('click', e => { state.inView = !state.inView; e.currentTarget.classList.toggle('on', state.inView); renderList(); $('#list').scrollTop = 0; });
   let mvT; map.on('moveend', () => { if (state.inView) { clearTimeout(mvT); mvT = setTimeout(renderList, 150); } });
   const openAbout = () => { const d = $('#about'); d.showModal(); if (document.activeElement) document.activeElement.blur(); d.scrollTop = 0; d.querySelector('.about').scrollTop = 0; };
   $('#aboutBtn').addEventListener('click', openAbout);
   $('#evbar').addEventListener('click', openAbout);
   if (location.hash === '#about') openAbout();
   $('#aboutClose').addEventListener('click', () => $('#about').close());
+  { const g = STORES.filter(isGone); if (g.length) { $('#goneDt').hidden = false; const dd = $('#goneDd'); dd.hidden = false; dd.textContent = g.map(s => s.name + '（' + jdate(s.gone) + '）').join('、') + '。地図と一覧からは外しています。店名で検索するとお知らせを読めます'; } }
   $('#updated').textContent = DATA.updated; $('#updatedJ').textContent = jdate(DATA.updated);
   if (!MEDIA) { document.title = '神田カレーマップ2026（非公式・写真なし版）'; }
   window.addEventListener('hashchange', route);

@@ -180,6 +180,16 @@ for i, x in enumerate(raw):
         "paySrc": "報告" if OVERRIDES.get(sid, {}).get("pay") else ("公式" if extract_pay(x) else ""),
         "reserve": f.get("予約", ""), "quiet": f.get("比較的空いている時間", ""),
     })
+# ---- 公式のお知らせにだけ書かれる変更を、営業の判定に反映する（お知らせが消えれば自動で元に戻る）
+for o in out:
+    # 閉店：「2026年9月25日をもちまして、閉店」→ 翌日から地図と一覧に出さない
+    m = re.search(r'(\d{4})年(\d{1,2})月(\d{1,2})日をもちまして.{0,6}(?:閉店|閉業)', o["notice"])
+    if m: o["gone"] = f"{m.group(1)}-{int(m.group(2)):02d}-{int(m.group(3)):02d}"
+    # 期限なしのランチ休止：15時より前に始まる時間帯を外す（日付つきの1日だけの休みは対象にしない）
+    if re.search(r'(しばらく|当面).{0,10}ランチ(タイム)?を?お休み', o["notice"]):
+        for r in o["sched"]["rules"]: r["r"] = [x for x in r["r"] if x[0] >= 900]
+        o["sched"]["rules"] = [r for r in o["sched"]["rules"] if r["r"]]
+print("closed for good:", [(o["name"], o["gone"]) for o in out if o.get("gone")])
 print("unmatched pdf pages:", len(unmatched))
 for u in unmatched: print("  ", u)
 from collections import Counter
