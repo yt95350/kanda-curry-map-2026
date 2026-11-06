@@ -175,7 +175,6 @@ dialog::backdrop{background:rgba(0,0,0,.4)}
     <button class="stat" id="visitedStat" title="訪問済みだけ表示">訪問 0</button>
     <button class="icon" id="aboutBtn" title="このアプリについて">ⓘ</button>
   </header>
-  <button class="evbar" id="evbar"><span>8/1〜12/20｜10店でバディ賞、42個からマイスター</span><b>概要 ›</b></button>
   <div class="toolbar">
     <input id="q" type="search" placeholder="店名・メニュー・駅・住所で検索" autocomplete="off">
     <button id="locBtn" title="現在地を表示・近い順に並べる">📍</button>
@@ -448,7 +447,7 @@ const DATA = /*__DATA__*/null;
     { const x = st(s); if (x.label || x.today) h += '<div class="dstatus">' + stxHtml(x) + (x.today ? '<span>本日 ' + esc(x.today) + '</span>' : '') + '<span style="color:var(--muted);font-size:12px">（公式の営業時間からの目安）</span></div>'; }
     if (s.notice) h += '<div class="notice"><b>お店からのお知らせ（公式サイトより）</b>' + esc(s.notice) + '</div>';
     h += '<div class="actions"><a class="primary" href="' + esc(dir) + '" target="_blank" rel="noopener">🚶 経路（Googleマップ）</a>' +
-      '<button class="visit' + (v ? ' on' : '') + '" id="visit">' + (v ? '✓ 訪問済み ' + v : '☐ 訪問済みにする') + '</button>' +
+      '<button class="visit' + (v ? ' on' : '') + '" id="visit">' + (v ? '✓ 訪問済み' : '☐ 訪問済みにする') + '</button>' +
       '<button class="nxt' + (nextUp[s.id] ? ' on' : '') + '" id="nxt">' + (nextUp[s.id] ? '★ 次行く（外す）' : '☆ 次行く') + '</button></div>';
     if (s.menu.length) h += '<div class="sec"><h2>メニュー（公式サイト掲載）</h2>' + menuHtml(s.menu) + '</div>';
     if (MEDIA && s.desc && s.desc.length) {
@@ -610,7 +609,6 @@ const DATA = /*__DATA__*/null;
   let mvT; map.on('moveend', () => { if (state.inView) { clearTimeout(mvT); mvT = setTimeout(renderList, 150); } });
   const openAbout = () => { const d = $('#about'); d.showModal(); if (document.activeElement) document.activeElement.blur(); d.scrollTop = 0; d.querySelector('.about').scrollTop = 0; };
   $('#aboutBtn').addEventListener('click', openAbout);
-  $('#evbar').addEventListener('click', openAbout);
   if (location.hash === '#about') openAbout();
   $('#aboutClose').addEventListener('click', () => $('#about').close());
   { const g = STORES.filter(isGone); if (g.length) { $('#goneDt').hidden = false; const dd = $('#goneDd'); dd.hidden = false; dd.textContent = g.map(s => s.name + '（' + jdate(s.gone) + '）').join('、') + '。地図と一覧からは外しています。店名で検索するとお知らせを読めます'; } }
